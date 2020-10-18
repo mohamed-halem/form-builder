@@ -1,0 +1,85 @@
+<div class="container">
+  <!--form builder -->
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <form [formGroup] = "formbuilder" (ngSubmit)=ngsubmit()>
+        <h2>Form Builder</h2>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="exampleInputPassword1">select language</label>
+              <select (change)="chooselang($event.target.value)" class="custom-select" id="inputGroupSelect01">
+                <option selected value="eng">English</option>
+                <option value="ar">Arabic</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class="hidden" >Form Name</label>
+              <input [style.text-align]="selectLan === 'eng'?'left': 'right'" #formNameEdit formControlName="formName" type="text" class="form-control" [placeholder]="selectLan === 'eng'?'Enter Form Name':'form ادخل اسم'" (blur)="checkformname($event.target.value)">
+              <div [hidden]="!show" class="alert alert-danger" role="alert">
+                you can not create a form with same name
+              </div>
+            </div> 
+          </div> 
+          <div class="col-6"  formArrayName='namelabel'>
+            <div class="form-group" *ngFor="let namelabel of formbuilder.get('namelabel').controls; let i=index" >
+              <label class="hidden">Label name</label>
+              <input [style.text-align]="selectLan === 'eng'?'left': 'right'" [formControlName]="i" type="text" class="form-control" [placeholder]="selectLan === 'eng'?'Enter name label':'label ادخل اسم' ">
+            </div> 
+          </div>
+      
+          <div class="col-6" formArrayName='type'>
+            <div class="form-group" *ngFor="let typelabel of formbuilder.get('type').controls; let i=index">
+              <label for="exampleInputPassword1">type of input</label>
+              <select [formControlName]="i" class="custom-select" id="inputGroupSelect01">
+                <option value="text">text</option>
+                <option value="number">number</option>
+                <option value="date">data picker</option>
+                <option value="checkbox">checkbox</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary addlabel" (click)="newlabel()">add a new label</button>
+        <button type="submit" class="btn btn-primary submit" [disabled]=!formbuilder.valid>create Form</button>
+      </form>
+    </div>
+    <div class="col-3"></div>
+  </div>
+
+ 
+  <!--created new form -->
+  <div class="row">
+    <div class="col-6" *ngFor="let label of fieldsForm">
+      <form class="newform" [formGroup] = "newForm" >
+      <div class="form-group" >
+       
+        <h2>{{label.formName}}</h2>
+         <div class="row">
+           <div class="col-3">
+             <div class="row">
+              <div class="col-12" *ngFor="let fieldsForm of label.namelabel">
+                <label >{{fieldsForm}}</label>
+              </div>
+            </div> 
+          </div>
+          <div class="col-7">
+            <div class="row">
+            <div class="col-12" *ngFor="let fieldsForm of label.type">
+              <input  type="{{fieldsForm}}" class="form-control">
+            </div>  
+            </div>
+          </div>
+         </div>
+    
+      </div>
+      <div class="text-center">
+         <button type="submit" class="btn btn-primary submit-btn addlabel" >submit</button>
+       </div>
+      </form>
+    </div>
+  </div>
+</div>
